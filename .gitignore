@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+.idea/.idea.DiplomaTopicsApp/.idea/workspace.xml
+.idea/.idea.DiplomaTopicsApp/.idea/projectSettingsUpdater.xml
