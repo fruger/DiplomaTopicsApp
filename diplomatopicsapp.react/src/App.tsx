@@ -1,7 +1,8 @@
 import React from "react";
+import TopicsMain from "./components/Topics/TopicsMain";
 
 function App() {
-  return <div className="App"></div>;
+  return <TopicsMain />;
 }
 
 export default App;

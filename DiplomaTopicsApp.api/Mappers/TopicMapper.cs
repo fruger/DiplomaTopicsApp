@@ -9,9 +9,11 @@ public static class TopicMapper
     {
         return new Topic
         {
-            Name = createTopicDto.Name,
+            Title = createTopicDto.Title,
+            Degree = createTopicDto.Degree,
+            FieldOfStudy = createTopicDto.FieldOfStudy,
+            Author = createTopicDto.Author,
             Description = createTopicDto.Description,
-            Author = createTopicDto.Author
         };
     }
 }
