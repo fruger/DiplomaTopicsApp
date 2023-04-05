@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 .idea/.idea.DiplomaTopicsApp/.idea/workspace.xml
 .idea/.idea.DiplomaTopicsApp/.idea/projectSettingsUpdater.xml
+.idea/.idea.DiplomaTopicsApp/.idea/indexLayout.xml
+.idea/.idea.DiplomaTopicsApp/.idea/vcs.xml

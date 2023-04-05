@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import topicsApi from "../../api/topicsApi";
-import Topic from "../../types/Topic";
+import Topic from "../../types/Topic/Topic";
 import TopicsTable from "./TopicsTable";
 import { Box } from "@mui/material";
 import TopicsHeader from "./TopicsHeader";

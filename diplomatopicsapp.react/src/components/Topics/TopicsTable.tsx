@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { FC } from "react";
-import Topic from "../../types/Topic";
+import Topic from "../../types/Topic/Topic";
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
 

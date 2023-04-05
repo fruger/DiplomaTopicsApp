@@ -8,8 +8,11 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 import BoxForm from "../../common/BoxForm";
+import CommonSubmitButton from "../../common/CommonSubmitButton";
+import topicsApi from "../../../api/topicsApi";
+import NewTopic from "../../../types/Topic/NewTopic";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,6 +33,7 @@ const CustomButton = styled(Button)({
 
 const CharacterCounter = styled(Typography)({
   float: "right",
+  flex: "0 0 auto",
 });
 
 interface AddTopicModalProps {
@@ -43,6 +47,7 @@ const AddTopicModal: FC<AddTopicModalProps> = ({ open, onClose }) => {
   const [degree, setDegree] = useState<string>("");
   const [fieldOfStudy, setFieldOfStudy] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
+  const [isMakingRequest, setIsMakingRequest] = useState<boolean>(false);
 
   const titleChangeHandler = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -68,6 +73,26 @@ const AddTopicModal: FC<AddTopicModalProps> = ({ open, onClose }) => {
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ): void => {
     setAuthor(event.target.value);
+  };
+
+  const handleOnSubmitForm = (event: FormEvent): void => {
+    event.preventDefault();
+
+    setIsMakingRequest(true);
+    const requestBody: NewTopic = {
+      title: title,
+      description: description,
+      degree: degree,
+      fieldOfStudy: fieldOfStudy,
+      author: author,
+    };
+    topicsApi
+      .create(requestBody)
+      .then(({ data }) => {})
+      .catch(() => {})
+      .finally(() => {
+        setIsMakingRequest(false);
+      });
   };
 
   return (
@@ -109,7 +134,9 @@ const AddTopicModal: FC<AddTopicModalProps> = ({ open, onClose }) => {
               rows={8}
               inputProps={{ maxLength: 500 }}
             />
-            <CharacterCounter>{description.length}/500</CharacterCounter>
+            <Box style={{ flex: "0 0 auto" }}>
+              <CharacterCounter>{description.length}/500</CharacterCounter>
+            </Box>
             <TextField
               id="degree-input"
               label="Degree"
@@ -138,7 +165,11 @@ const AddTopicModal: FC<AddTopicModalProps> = ({ open, onClose }) => {
               style={{ width: "50%" }}
             />
           </BoxForm>
-          <CustomButton variant="contained">Add topic</CustomButton>
+          <CommonSubmitButton
+            onClick={(event) => handleOnSubmitForm(event)}
+            loading={isMakingRequest}
+            text="Add topic"
+          />
           <CustomButton
             type="reset"
             defaultValue="Reset"
