@@ -1,10 +1,5 @@
-import { Box, styled } from "@mui/material";
 import { FC, FormEvent } from "react";
 import LoadingButton from "./LoadingButton";
-
-const SubmitBox = styled(Box)({
-  marginTop: "1.5rem",
-});
 
 interface CommonSubmitButtonProps {
   onClick: (event: FormEvent) => void;
@@ -22,15 +17,13 @@ const CommonSubmitButton: FC<CommonSubmitButtonProps> = ({
   fullWidth,
 }) => {
   return (
-    <SubmitBox>
-      <LoadingButton
-        onClick={onClick}
-        text={text}
-        loading={loading}
-        disabled={disabled}
-        fullWidth={fullWidth}
-      />
-    </SubmitBox>
+    <LoadingButton
+      onClick={onClick}
+      text={text}
+      loading={loading}
+      disabled={disabled}
+      fullWidth={fullWidth}
+    />
   );
 };
 

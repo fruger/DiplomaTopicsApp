@@ -1,8 +1,9 @@
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 import { FC } from "react";
 import Topic from "../../types/Topic/Topic";
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
+import { Box, makeStyles } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const TableContainer = styled(Box)({
   margin: "auto",
@@ -15,6 +16,9 @@ const StyledDataGrid = styled(DataGrid)({
   "& .MuiDataGrid-columnHeaderTitleContainerContent": {
     fontSize: 20,
   },
+  ":hover": {
+    cursor: "pointer",
+  },
 });
 
 interface TopicsTableProps {
@@ -22,11 +26,14 @@ interface TopicsTableProps {
 }
 
 const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
+  const navigate = useNavigate();
+
   const columns: GridColDef[] = [
     {
       field: "title",
       headerName: "Title",
       flex: 0.6,
+      headerClassName: "name-header",
     },
     { field: "degree", headerName: "Degree", flex: 0.1 },
     { field: "field", headerName: "Field of study", flex: 0.15 },
@@ -41,6 +48,18 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
     author: item.author,
   }));
 
+  const handleRowClick: GridEventListener<"rowClick"> = (params) => {
+    navigate(`details/${params.row.id}`, {
+      state: {
+        id: params.row.id,
+        title: params.row.title,
+        degree: params.row.degree,
+        field: params.row.fieldOfStudy,
+        author: params.row.author,
+      },
+    });
+  };
+
   return (
     <TableContainer>
       <StyledDataGrid
@@ -50,6 +69,7 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
         showColumnVerticalBorder
         hideFooter
         autoHeight
+        onRowClick={handleRowClick}
       />
     </TableContainer>
   );

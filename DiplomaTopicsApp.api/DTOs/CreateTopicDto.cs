@@ -1,8 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DiplomaTopicsApp.api.DTOs;
 
-public abstract class CreateTopicDto
+public class CreateTopicDto
 {
+    [Required]
     public string Title { get; set; }
+    [Required]
     public string Degree { get; set; }
     public string? FieldOfStudy { get; set; }
     public string? Author { get; set; }

@@ -55,7 +55,7 @@ namespace DiplomaTopicsApp.api.Controllers
         {
             var topic = createTopicDto.DtoToModel();
 
-            _context.Topics.Add(topic);
+            await _context.Topics.AddAsync(topic);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTopic", new { id = topic.Id }, topic);
