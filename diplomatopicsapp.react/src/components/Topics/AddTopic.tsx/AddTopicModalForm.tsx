@@ -19,9 +19,13 @@ const ButtonGroup = styled(Box)({
 
 interface AddTopicModalFormProps {
   onClose: () => void;
+  getTopics: () => void;
 }
 
-const AddTopicModalForm: FC<AddTopicModalFormProps> = ({ onClose }) => {
+const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
+  onClose,
+  getTopics,
+}) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [degree, setDegree] = useState<string>("");
@@ -68,7 +72,12 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({ onClose }) => {
     };
     topicsApi
       .create(requestBody)
-      .then(({ data }) => {})
+      .then(() => {
+        getTopics();
+      })
+      .then(() => {
+        onClose();
+      })
       .catch(() => {})
       .finally(() => {
         setIsMakingRequest(false);

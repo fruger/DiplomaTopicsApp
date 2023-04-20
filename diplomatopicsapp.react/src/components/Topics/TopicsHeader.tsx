@@ -8,7 +8,11 @@ const AddTopicButton = styled(Button)({
   marginBottom: "2rem",
 });
 
-const TopicsHeader: FC = () => {
+interface TopicsHeaderProps {
+  getTopics: () => void;
+}
+
+const TopicsHeader: FC<TopicsHeaderProps> = ({ getTopics }) => {
   const [open, setOpen] = useState<boolean>(false);
   const onAddTopicClick = (): void => {
     setOpen(true);
@@ -19,7 +23,7 @@ const TopicsHeader: FC = () => {
       <AddTopicButton variant="contained" onClick={onAddTopicClick}>
         Add new topic
       </AddTopicButton>
-      <AddTopicModal open={open} onClose={handleClose} />
+      <AddTopicModal getTopics={getTopics} open={open} onClose={handleClose} />
     </div>
   );
 };

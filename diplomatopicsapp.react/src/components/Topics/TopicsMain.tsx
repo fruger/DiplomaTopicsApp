@@ -7,18 +7,23 @@ import TopicsHeader from "./TopicsHeader";
 
 const TopicsMain: FC = () => {
   const [allItems, setAllItems] = useState<Topic[]>([]);
-  useEffect(() => {
+
+  const getTopics = () => {
     void topicsApi
       .getAll()
       .then(({ data }) => {
         setAllItems(data);
       })
       .catch(() => {});
+  };
+
+  useEffect(() => {
+    getTopics();
   }, []);
 
   return (
     <Box>
-      <TopicsHeader />
+      <TopicsHeader getTopics={getTopics} />
       <TopicsTable allItems={allItems} />
     </Box>
   );

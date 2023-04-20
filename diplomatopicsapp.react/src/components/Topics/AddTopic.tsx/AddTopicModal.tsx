@@ -18,9 +18,14 @@ const style = {
 interface AddTopicModalProps {
   open: boolean;
   onClose: () => void;
+  getTopics: () => void;
 }
 
-const AddTopicModal: FC<AddTopicModalProps> = ({ open, onClose }) => {
+const AddTopicModal: FC<AddTopicModalProps> = ({
+  open,
+  onClose,
+  getTopics,
+}) => {
   return (
     <Modal
       open={open}
@@ -38,7 +43,7 @@ const AddTopicModal: FC<AddTopicModalProps> = ({ open, onClose }) => {
       <Fade in={open}>
         <Box sx={style}>
           <Typography>Add New Topic</Typography>
-          <AddTopicModalForm onClose={onClose} />
+          <AddTopicModalForm onClose={onClose} getTopics={getTopics} />
         </Box>
       </Fade>
     </Modal>

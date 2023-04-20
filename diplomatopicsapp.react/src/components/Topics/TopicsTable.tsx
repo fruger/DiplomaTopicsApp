@@ -2,7 +2,7 @@ import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 import { FC } from "react";
 import Topic from "../../types/Topic/Topic";
 import styled from "@emotion/styled";
-import { Box, makeStyles } from "@mui/material";
+import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const TableContainer = styled(Box)({
@@ -33,10 +33,9 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
       field: "title",
       headerName: "Title",
       flex: 0.6,
-      headerClassName: "name-header",
     },
     { field: "degree", headerName: "Degree", flex: 0.1 },
-    { field: "field", headerName: "Field of study", flex: 0.15 },
+    { field: "fieldOfStudy", headerName: "Field of study", flex: 0.15 },
     { field: "author", headerName: "Author", flex: 0.15 },
   ];
 
@@ -44,7 +43,7 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
     id: item.id,
     title: item.title,
     degree: item.degree,
-    field: item.fieldOfStudy,
+    fieldOfStudy: item.fieldOfStudy,
     author: item.author,
   }));
 
@@ -54,7 +53,7 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
         id: params.row.id,
         title: params.row.title,
         degree: params.row.degree,
-        field: params.row.fieldOfStudy,
+        fieldOfStudy: params.row.fieldOfStudy,
         author: params.row.author,
       },
     });
