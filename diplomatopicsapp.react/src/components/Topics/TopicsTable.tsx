@@ -6,9 +6,8 @@ import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const TableContainer = styled(Box)({
-  margin: "auto",
+  margin: "0 3.5rem 0 3.5rem",
   backgroundColor: "#CCCCCC",
-  width: "90%",
 });
 
 const StyledDataGrid = styled(DataGrid)({
@@ -45,6 +44,7 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
     degree: item.degree,
     fieldOfStudy: item.fieldOfStudy,
     author: item.author,
+    description: item.description,
   }));
 
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
@@ -55,6 +55,7 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
         degree: params.row.degree,
         fieldOfStudy: params.row.fieldOfStudy,
         author: params.row.author,
+        description: params.row.description,
       },
     });
   };

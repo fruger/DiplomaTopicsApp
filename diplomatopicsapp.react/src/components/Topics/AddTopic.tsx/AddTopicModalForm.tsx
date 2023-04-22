@@ -104,7 +104,7 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
         fullWidth
         margin="normal"
         multiline
-        rows={8}
+        rows={9}
         inputProps={{ maxLength: 500 }}
       />
       <Box style={{ flex: "0 0 auto" }}>

@@ -3,9 +3,7 @@ import { FC, useState } from "react";
 import AddTopicModal from "./AddTopic.tsx/AddTopicModal";
 
 const AddTopicButton = styled(Button)({
-  marginTop: "2rem",
-  marginLeft: "5rem",
-  marginBottom: "2rem",
+  margin: "2rem 0 2rem 3.5rem",
 });
 
 interface TopicsHeaderProps {
