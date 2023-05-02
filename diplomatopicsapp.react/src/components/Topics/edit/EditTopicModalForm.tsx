@@ -2,8 +2,22 @@ import { ChangeEvent, FC, FormEvent, useState } from "react";
 import BoxForm from "../../common/BoxForm";
 import NewTopic from "../../../types/Topic/NewTopic";
 import topicsApi from "../../../api/topicsApi";
-import { Box, Button, TextField, Typography, styled } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+  styled,
+} from "@mui/material";
 import CommonSubmitButton from "../../common/CommonSubmitButton";
+import * as Yup from "yup";
+import { useFormik } from "formik";
+import Topic from "../../../types/Topic/Topic";
 
 const CharacterCounter = styled(Typography)({
   float: "right",
@@ -17,36 +31,21 @@ const ButtonGroup = styled(Box)({
   marginTop: 15,
 });
 
-interface AddTopicModalFormProps {
+interface EditTopicModalFormProps {
+  item: Topic;
   onClose: () => void;
-  getTopics: () => void;
 }
 
-const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
-  onClose,
-  getTopics,
-}) => {
-  const [title, setTitle] = useState<string>("");
+const EditTopicModalForm: FC<EditTopicModalFormProps> = ({ item, onClose }) => {
   const [description, setDescription] = useState<string>("");
-  const [degree, setDegree] = useState<string>("");
   const [fieldOfStudy, setFieldOfStudy] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const [isMakingRequest, setIsMakingRequest] = useState<boolean>(false);
 
-  const titleChangeHandler = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    setTitle(event.target.value);
-  };
   const descriptionChangeHandler = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ): void => {
     setDescription(event.target.value);
-  };
-  const degreeChangeHandler = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    setDegree(event.target.value);
   };
   const fieldOfStudyChangeHandler = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -64,17 +63,14 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
 
     setIsMakingRequest(true);
     const requestBody: NewTopic = {
-      title: title,
+      title: formik.values.title,
       description: description,
-      degree: degree,
+      degree: formik.values.degree,
       fieldOfStudy: fieldOfStudy,
       author: author,
     };
     topicsApi
       .create(requestBody)
-      .then(() => {
-        getTopics();
-      })
       .then(() => {
         onClose();
       })
@@ -84,21 +80,41 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
       });
   };
 
+  const validationSchema = Yup.object().shape({
+    title: Yup.string()
+      .min(2, "Too short")
+      .max(50, "Too long")
+      .required("Title is required"),
+    degree: Yup.string().required("Degree is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      title: item.title,
+      degree: item.degree,
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   return (
     <BoxForm>
       <TextField
-        id="title-input"
-        label="Title"
-        variant="outlined"
-        value={title ?? ""}
-        onChange={titleChangeHandler}
         fullWidth
-        margin="normal"
+        id="title"
+        name="title"
+        label="Title"
+        value={formik.values.title}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.title && Boolean(formik.errors.title)}
+        helperText={formik.touched.title && formik.errors.title}
       />
       <TextField
         id="description-input"
         label="Description"
-        variant="outlined"
         value={description ?? ""}
         onChange={descriptionChangeHandler}
         fullWidth
@@ -107,22 +123,36 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
         rows={9}
         inputProps={{ maxLength: 500 }}
       />
-      <Box style={{ flex: "0 0 auto" }}>
+      <Box sx={{ flex: "0 0 auto", marginBottom: "0.75rem" }}>
         <CharacterCounter>{description.length}/500</CharacterCounter>
       </Box>
-      <TextField
-        id="degree-input"
-        label="Degree"
-        variant="outlined"
-        value={degree ?? ""}
-        onChange={degreeChangeHandler}
-        margin="normal"
-        style={{ width: "50%" }}
-      />
+      <FormControl
+        fullWidth
+        error={formik.touched.degree && Boolean(formik.errors.degree)}
+      >
+        <InputLabel id="degree-label">Degree</InputLabel>
+        <Select
+          labelId="degree-label"
+          id="degree"
+          name="degree"
+          label="Degree"
+          value={formik.values.degree}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        >
+          <MenuItem value="">Select a degree</MenuItem>
+          <MenuItem value="Bachelor's">Bachelor's</MenuItem>
+          <MenuItem value="Engineer's">Engineer's</MenuItem>
+          <MenuItem value="Master's">Master's</MenuItem>
+          <MenuItem value="Doctorate">Doctorate</MenuItem>
+        </Select>
+        <FormHelperText>
+          {formik.touched.degree && formik.errors.degree}
+        </FormHelperText>
+      </FormControl>
       <TextField
         id="fieldofstudy-input"
         label="Field of study"
-        variant="outlined"
         value={fieldOfStudy ?? ""}
         onChange={fieldOfStudyChangeHandler}
         margin="normal"
@@ -131,7 +161,6 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
       <TextField
         id="author-input"
         label="Author"
-        variant="outlined"
         value={author ?? ""}
         onChange={authorChangeHandler}
         margin="normal"
@@ -156,4 +185,4 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
   );
 };
 
-export default AddTopicModalForm;
+export default EditTopicModalForm;

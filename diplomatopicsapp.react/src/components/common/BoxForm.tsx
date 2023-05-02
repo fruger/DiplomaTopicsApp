@@ -26,6 +26,7 @@ const BoxForm: FC<BoxFormProps> = ({ children }) => {
           "&:hover fieldset": { borderColor: "white" },
           "&.Mui-focused fieldset": { borderColor: "white" },
         },
+        "& .MuiSvgIcon-root": { color: "white" },
         display: "flex",
         flexDirection: "column",
       }}

@@ -6,14 +6,18 @@ import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const TableContainer = styled(Box)({
-  margin: "0 3.5rem 0 3.5rem",
+  margin: "2rem 3.5rem 2rem 3.5rem",
   backgroundColor: "#CCCCCC",
 });
 
 const StyledDataGrid = styled(DataGrid)({
+  borderRadius: 10,
   "--unstable_DataGrid-headWeight": 700,
   "& .MuiDataGrid-columnHeaderTitleContainerContent": {
     fontSize: 20,
+  },
+  "& .MuiDataGrid-columnHeader": {
+    backgroundColor: "#1976d2",
   },
   ":hover": {
     cursor: "pointer",

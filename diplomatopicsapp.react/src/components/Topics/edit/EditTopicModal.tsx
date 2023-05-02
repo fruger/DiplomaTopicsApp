@@ -1,6 +1,7 @@
 import { Backdrop, Box, Fade, Modal, Typography } from "@mui/material";
 import { FC } from "react";
-import AddTopicModalForm from "./AddTopicModalForm";
+import EditTopicModalForm from "./EditTopicModalForm";
+import Topic from "../../../types/Topic/Topic";
 
 const style = {
   position: "absolute" as "absolute",
@@ -15,17 +16,13 @@ const style = {
   borderRadius: 1,
 };
 
-interface AddTopicModalProps {
+interface EditTopicModalProps {
   open: boolean;
+  item: Topic;
   onClose: () => void;
-  getTopics: () => void;
 }
 
-const AddTopicModal: FC<AddTopicModalProps> = ({
-  open,
-  onClose,
-  getTopics,
-}) => {
+const EditTopicModal: FC<EditTopicModalProps> = ({ open, item, onClose }) => {
   return (
     <Modal
       open={open}
@@ -42,12 +39,12 @@ const AddTopicModal: FC<AddTopicModalProps> = ({
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Typography>Add New Topic</Typography>
-          <AddTopicModalForm onClose={onClose} getTopics={getTopics} />
+          <Typography>Edit Topic</Typography>
+          <EditTopicModalForm onClose={onClose} item={item} />
         </Box>
       </Fade>
     </Modal>
   );
 };
 
-export default AddTopicModal;
+export default EditTopicModal;
