@@ -39,7 +39,9 @@ const EditTopicModal: FC<EditTopicModalProps> = ({ open, item, onClose }) => {
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Typography>Edit Topic</Typography>
+          <Typography sx={{ fontSize: "2rem", fontWeight: "bold" }}>
+            Edit Topic
+          </Typography>
           <EditTopicModalForm onClose={onClose} item={item} />
         </Box>
       </Fade>

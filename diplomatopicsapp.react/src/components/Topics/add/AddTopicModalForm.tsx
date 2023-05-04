@@ -17,7 +17,6 @@ import {
 import CommonSubmitButton from "../../common/CommonSubmitButton";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import ErrorInfoSnackbar from "../../common/ErrorSnackbar";
 
 const CharacterCounter = styled(Typography)({
   float: "right",
@@ -105,7 +104,7 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .min(2, "Too short")
-      .max(50, "Too long")
+      .max(200, "Too long")
       .required("Title is required"),
     degree: Yup.string().required("Degree is required"),
   });

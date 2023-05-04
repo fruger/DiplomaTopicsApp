@@ -2,25 +2,30 @@ import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 import { FC } from "react";
 import Topic from "../../types/Topic/Topic";
 import styled from "@emotion/styled";
-import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const TableContainer = styled(Box)({
+const StyledDataGrid = styled(DataGrid)({
   margin: "2rem 3.5rem 2rem 3.5rem",
   backgroundColor: "#CCCCCC",
-});
-
-const StyledDataGrid = styled(DataGrid)({
-  borderRadius: 10,
+  borderRadius: "8px",
   "--unstable_DataGrid-headWeight": 700,
   "& .MuiDataGrid-columnHeaderTitleContainerContent": {
     fontSize: 20,
   },
-  "& .MuiDataGrid-columnHeader": {
+  "& .MuiDataGrid-columnHeaders": {
+    color: "#ffffff",
     backgroundColor: "#1976d2",
+    borderRadius: "8px",
   },
   ":hover": {
     cursor: "pointer",
+  },
+  '& .MuiDataGrid-cell[aria-colindex="1"]': {
+    fontWeight: "bold",
+  },
+  "& .MuiDataGrid-cellContent": {
+    whiteSpace: "normal",
+    wordWrap: "break-word",
   },
 });
 
@@ -65,17 +70,15 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
   };
 
   return (
-    <TableContainer>
-      <StyledDataGrid
-        rows={rows}
-        columns={columns}
-        showCellVerticalBorder
-        showColumnVerticalBorder
-        hideFooter
-        autoHeight
-        onRowClick={handleRowClick}
-      />
-    </TableContainer>
+    <StyledDataGrid
+      rows={rows}
+      columns={columns}
+      showCellVerticalBorder
+      showColumnVerticalBorder
+      hideFooter
+      autoHeight
+      onRowClick={handleRowClick}
+    />
   );
 };
 
