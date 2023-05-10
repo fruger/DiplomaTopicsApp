@@ -18,34 +18,60 @@ namespace DiplomaTopicsApp.api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Topic>>> GetTopics()
+        public async Task<ActionResult<IEnumerable<GetTopicsDto>>> GetTopics()
         {
-            return await _context.Topics.ToListAsync();
+            var topics = await _context.Topics.ToListAsync();
+
+            return topics.Select(x => x.ModelToGetTopicsDto()).ToArray();
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Topic>> GetTopic(int id)
+        public async Task<ActionResult<GetTopicDto>> GetTopic(int id)
         {
             var topic = await _context.Topics.Where(t => t.Id == id).FirstOrDefaultAsync();
-
+            
             if (topic == null)
             {
                 return NotFound();
             }
 
-            return topic;
+            return topic.ModelToGetTopicDto();
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> PutTopic(int id, Topic topic)
+        public async Task<IActionResult> PutTopic(int id, [FromBody] EditTopicDto editTopicDto)
         {
-            if (id != topic.Id)
+            if (id != editTopicDto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Update(topic);
-            await _context.SaveChangesAsync();
+            var topicToUpdate = await _context.Topics.FindAsync(id);
+
+            if (topicToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            var updatedTopic = editTopicDto.DtoToModel();
+            updatedTopic.Id = id;
+
+            _context.Entry(topicToUpdate).CurrentValues.SetValues(updatedTopic);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TopicExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return NoContent();
         }
@@ -53,6 +79,8 @@ namespace DiplomaTopicsApp.api.Controllers
         [HttpPost]
         public async Task<ActionResult<Topic>> CreateTopic(CreateTopicDto createTopicDto)
         {
+            createTopicDto.CreatedAt = DateTime.Now;
+            
             var topic = createTopicDto.DtoToModel();
 
             await _context.Topics.AddAsync(topic);
@@ -74,6 +102,11 @@ namespace DiplomaTopicsApp.api.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+        
+        private bool TopicExists(int id)
+        {
+            return _context.Topics.Any(e => e.Id == id);
         }
     }
 }

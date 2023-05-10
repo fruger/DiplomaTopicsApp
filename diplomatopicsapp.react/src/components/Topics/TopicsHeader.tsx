@@ -1,32 +1,34 @@
-import { Button, styled } from "@mui/material";
-import { FC, useState } from "react";
-import AddTopicModal from "./add/AddTopicModal";
+import { Box, styled } from "@mui/material";
+import { FC } from "react";
+import DataGridSearcher from "../common/DataGridSearcher";
+import AddTopic from "./add/AddTopic";
 
-const AddTopicButton = styled(Button)({
-  margin: "2rem 0 0 3.5rem",
+const Header = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+  margin: "3.5rem",
+});
+
+const SearcherContainer = styled(Box)({
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "end",
+  alignItems: "start",
 });
 
 interface TopicsHeaderProps {
   getTopics: () => void;
+  onSearch: (query: string) => void;
 }
 
-const TopicsHeader: FC<TopicsHeaderProps> = ({ getTopics }) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const onAddTopicClick = (): void => {
-    setOpen(true);
-  };
-  const handleCloseModal = (): void => setOpen(false);
+const TopicsHeader: FC<TopicsHeaderProps> = ({ getTopics, onSearch }) => {
   return (
-    <div>
-      <AddTopicButton variant="contained" onClick={onAddTopicClick}>
-        Add new topic
-      </AddTopicButton>
-      <AddTopicModal
-        getTopics={getTopics}
-        open={open}
-        onClose={handleCloseModal}
-      />
-    </div>
+    <Header>
+      <AddTopic getTopics={getTopics} />
+      <SearcherContainer>
+        <DataGridSearcher onSearch={onSearch} />
+      </SearcherContainer>
+    </Header>
   );
 };
 

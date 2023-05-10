@@ -2,12 +2,13 @@ import { Button, CircularProgress } from "@mui/material";
 import { FC, FormEvent } from "react";
 
 interface LoadingButtonProps {
-  onClick: (event: FormEvent) => void;
-  text: string;
   loading: boolean;
+  onClick?: (event: FormEvent) => void;
+  text?: string;
   disabled?: boolean;
   color?: "warning";
   fullWidth?: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
 const LoadingButton: FC<LoadingButtonProps> = ({
@@ -17,6 +18,7 @@ const LoadingButton: FC<LoadingButtonProps> = ({
   disabled,
   color,
   fullWidth,
+  type,
 }) => {
   const isButtonDisabled = loading || (disabled ?? false);
 
@@ -24,6 +26,7 @@ const LoadingButton: FC<LoadingButtonProps> = ({
     <Button
       onClick={onClick}
       disabled={isButtonDisabled}
+      type={type}
       variant="contained"
       color={color}
       fullWidth={fullWidth}

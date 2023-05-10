@@ -8,9 +8,7 @@ interface BoxFormProps {
 const BoxForm: FC<BoxFormProps> = ({ children }) => {
   return (
     <Box
-      component="form"
       sx={{
-        mb: 1.5,
         mt: 1.5,
         "& .MuiInput-underline": {
           "&:before": { borderBottomColor: "white" },

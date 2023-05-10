@@ -4,6 +4,7 @@ using DiplomaTopicsApp.api;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomaTopicsApp.api.Migrations
 {
     [DbContext(typeof(DiplomaTopicsDbContext))]
-    partial class DiplomaTopicsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230507015743_AddedStatusAndCreatedAtAndMaxLengthAttribute")]
+    partial class AddedStatusAndCreatedAtAndMaxLengthAttribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +62,7 @@ namespace DiplomaTopicsApp.api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Topics", (string)null);
+                    b.ToTable("Topics");
                 });
 #pragma warning restore 612, 618
         }

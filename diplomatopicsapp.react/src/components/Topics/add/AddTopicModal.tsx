@@ -1,20 +1,17 @@
-import { Backdrop, Box, Fade, Modal, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  Fade,
+  Modal,
+  Typography,
+  styled,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { FC, useState } from "react";
 import AddTopicModalForm from "./AddTopicModalForm";
 import ErrorInfoSnackbar from "../../common/ErrorSnackbar";
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 700,
-  bgcolor: "#202124",
-  color: "white",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 1,
-};
 
 interface AddTopicModalProps {
   open: boolean;
@@ -30,6 +27,30 @@ const AddTopicModal: FC<AddTopicModalProps> = ({
   const [error, setError] = useState<boolean>(false);
 
   const handleCloseSnackbar = (): void => setError(false);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const ModalContent = styled(Box)({
+    position: "absolute",
+    top: "45%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#202124",
+    color: "white",
+    boxShadow: "0 0 30px black",
+    borderRadius: 1,
+    width: isSmallScreen ? "90%" : "50%",
+    height: "76vh",
+    padding: isSmallScreen ? "20px" : "50px",
+    margin: isSmallScreen ? "10px" : "50px",
+    overflowY: "auto",
+  });
+
+  const Header = styled(Typography)({
+    fontSize: "2rem",
+    fontWeight: "bold",
+  });
 
   return (
     <Box>
@@ -47,14 +68,14 @@ const AddTopicModal: FC<AddTopicModalProps> = ({
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
-            <Typography>Add New Topic</Typography>
+          <ModalContent>
+            <Header>Add New Topic</Header>
             <AddTopicModalForm
               onClose={onClose}
               getTopics={getTopics}
               setError={setError}
             />
-          </Box>
+          </ModalContent>
         </Fade>
       </Modal>
       {error && (

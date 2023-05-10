@@ -3,11 +3,16 @@ import { FC } from "react";
 import Topic from "../../types/Topic/Topic";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
+import DoneIcon from "@mui/icons-material/Done";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Tooltip } from "@mui/material";
 
 const StyledDataGrid = styled(DataGrid)({
-  margin: "2rem 3.5rem 2rem 3.5rem",
-  backgroundColor: "#CCCCCC",
+  margin: "0 3.5rem 2rem 3.5rem",
+  backgroundColor: "#454a4d",
   borderRadius: "8px",
+  borderColor: "#393d40",
+  color: "white",
   "--unstable_DataGrid-headWeight": 700,
   "& .MuiDataGrid-columnHeaderTitleContainerContent": {
     fontSize: 20,
@@ -20,6 +25,9 @@ const StyledDataGrid = styled(DataGrid)({
   ":hover": {
     cursor: "pointer",
   },
+  "& .MuiDataGrid-withBorderColor": {
+    borderColor: "#393d40",
+  },
   '& .MuiDataGrid-cell[aria-colindex="1"]': {
     fontWeight: "bold",
   },
@@ -29,22 +37,61 @@ const StyledDataGrid = styled(DataGrid)({
   },
 });
 
+const CenteredGridCell = styled(Box)({
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+});
+
+const GreenDoneIcon = styled(DoneIcon)({
+  color: "#00FF00",
+});
+const RedCloseIcon = styled(CloseIcon)({
+  color: "#FF0000",
+});
+
 interface TopicsTableProps {
   allItems: Topic[];
+  searchQuery: string;
 }
 
-const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
+const TopicsTable: FC<TopicsTableProps> = ({ allItems, searchQuery }) => {
   const navigate = useNavigate();
 
   const columns: GridColDef[] = [
     {
       field: "title",
       headerName: "Title",
-      flex: 0.6,
+      flex: 0.5,
     },
-    { field: "degree", headerName: "Degree", flex: 0.1 },
+    {
+      field: "degree",
+      headerName: "Degree",
+      flex: 0.1,
+    },
     { field: "fieldOfStudy", headerName: "Field of study", flex: 0.15 },
     { field: "author", headerName: "Author", flex: 0.15 },
+    {
+      field: "available",
+      headerName: "Available",
+      flex: 0.1,
+      renderCell: (params) => {
+        return (
+          <CenteredGridCell>
+            {params.value ? (
+              <Tooltip title="Available" disableInteractive>
+                <GreenDoneIcon />
+              </Tooltip>
+            ) : (
+              <Tooltip title="Not Available" disableInteractive>
+                <RedCloseIcon />
+              </Tooltip>
+            )}
+          </CenteredGridCell>
+        );
+      },
+    },
   ];
 
   const rows = allItems.map((item) => ({
@@ -53,26 +100,25 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems }) => {
     degree: item.degree,
     fieldOfStudy: item.fieldOfStudy,
     author: item.author,
-    description: item.description,
+    available: item.status,
   }));
+
+  const filteredRows = rows.filter((row) =>
+    Object.values(row).some((value) =>
+      String(value).toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  );
 
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     navigate(`details/${params.row.id}`, {
-      state: {
-        id: params.row.id,
-        title: params.row.title,
-        degree: params.row.degree,
-        fieldOfStudy: params.row.fieldOfStudy,
-        author: params.row.author,
-        description: params.row.description,
-      },
+      state: params.row,
     });
   };
 
   return (
     <StyledDataGrid
-      rows={rows}
       columns={columns}
+      rows={filteredRows}
       showCellVerticalBorder
       showColumnVerticalBorder
       hideFooter

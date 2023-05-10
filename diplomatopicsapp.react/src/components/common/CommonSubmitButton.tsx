@@ -2,19 +2,21 @@ import { FC, FormEvent } from "react";
 import LoadingButton from "./LoadingButton";
 
 interface CommonSubmitButtonProps {
-  onClick: (event: FormEvent) => void;
-  text: string;
   loading: boolean;
+  onClick?: (event: FormEvent) => void;
+  text?: string;
   disabled?: boolean;
   fullWidth?: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
 const CommonSubmitButton: FC<CommonSubmitButtonProps> = ({
+  loading,
   onClick,
   text,
-  loading,
   disabled,
   fullWidth,
+  type,
 }) => {
   return (
     <LoadingButton
@@ -23,6 +25,7 @@ const CommonSubmitButton: FC<CommonSubmitButtonProps> = ({
       loading={loading}
       disabled={disabled}
       fullWidth={fullWidth}
+      type={type}
     />
   );
 };

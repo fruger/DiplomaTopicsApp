@@ -1,42 +1,35 @@
 import { ArrowRight } from "@mui/icons-material";
-import { Box, Button, Paper, Typography } from "@mui/material";
-import { FC, useState } from "react";
+import { Box, CircularProgress, Paper, Typography } from "@mui/material";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "@emotion/styled";
-import EditTopicModal from "./edit/EditTopicModal";
 import ErrorInfoSnackbar from "../common/ErrorSnackbar";
+import EditTopic from "./edit/EditTopic";
+import DeleteTopic from "./delete/DeleteTopic";
+import topicsApi from "../../api/topicsApi";
+import TopicDetail from "../../types/Topic/TopicDetail";
+
+const StyledPaper = styled(Paper)({
+  margin: "0 3.5rem 0 3.5rem",
+  backgroundColor: "#454a4d",
+});
 
 const Title = styled(Box)({
-  backgroundColor: "white",
-  color: "#262626",
+  backgroundColor: "#454a4d",
+  color: "#ffffff",
   padding: "20px",
   fontSize: "2rem",
   fontWeight: "bold",
   position: "relative",
   marginBottom: "2rem",
-  "&::before": {
-    content: '""',
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "70%",
-    height: "9px",
-    backgroundColor: "#808080",
-  },
-  "&::after": {
-    content: '""',
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    width: "70%",
-    height: "9px",
-    backgroundColor: "#808080",
-  },
+  borderTop: "5px solid #181a1b",
+  borderBottom: "5px solid #181a1b",
 });
 
 const InfoBox = styled(Box)({
   display: "flex",
-  backgroundColor: "white",
+  color: "#ffffff",
+  backgroundColor: "#181a1b",
   width: "50%",
   margin: "0.5rem",
   borderRadius: "5px",
@@ -44,7 +37,8 @@ const InfoBox = styled(Box)({
 });
 
 const Description = styled(Typography)({
-  backgroundColor: "white",
+  color: "#ffffff",
+  backgroundColor: "#181a1b",
   margin: "0.5rem",
   padding: "0.5rem",
   borderRadius: "5px",
@@ -63,83 +57,85 @@ const BoldText = styled("span")({
   fontWeight: "bold",
 });
 
-const TopicDetails: FC = () => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+const Hour = styled(Box)({ color: "#ffffff" });
 
-  // const navigate = useNavigate();
+const TopicDetails: FC = () => {
+  const [details, setDetails] = useState<TopicDetail | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const { state } = useLocation();
 
-  const onEditTopicClick = (): void => {
-    setOpen(true);
-  };
-  const onDeleteTopicClick = (): void => {
-    // void topicsApi
-    //   .deleteTopic(state.id)
-    //   .then((response) => {
-    //     if (response.status === 204) {
-    //       navigate("/");
-    //     }
-    //   })
-    //   .catch(() => {
-    //     setError(true);
-    //   });
-  };
+  const getTopic = useCallback(() => {
+    setIsLoading(true);
+    void topicsApi
+      .getDetails(state.id)
+      .then(({ data }) => {
+        setDetails(data);
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [state.id]);
 
-  const handleCloseModal = (): void => setOpen(false);
+  useEffect(() => {
+    getTopic();
+  }, [getTopic]);
+
   const handleCloseSnackbar = (): void => setError(false);
+
+  let date = details?.createdAt.toString();
+  date = date?.split("T")[0];
 
   return (
     <Box>
       <ButtonContainer>
-        <Button
-          variant="contained"
-          sx={{ backgroundColor: "green" }}
-          onClick={onEditTopicClick}
-        >
-          Edit topic
-        </Button>
-        <Button
-          variant="contained"
-          sx={{ backgroundColor: "red" }}
-          onClick={onDeleteTopicClick}
-        >
-          Delete topic
-        </Button>
+        {details && <EditTopic item={details} getTopic={getTopic} />}
+        <DeleteTopic itemId={state.id} />
       </ButtonContainer>
-      <EditTopicModal open={open} onClose={handleCloseModal} item={state} />
-      <Title>{state.title}</Title>
-      <Paper
-        elevation={3}
-        sx={{ margin: "0 3.5rem 0 3.5rem", backgroundColor: "#808080" }}
-      >
-        <Box sx={{ padding: "1rem" }}>
-          {/* <Title>
-            <Typography>{state.title}</Typography>
-          </Title> */}
-          <InfoBox>
-            <ArrowRight sx={{ color: "#1976d2" }} />
-            <Typography>
-              <BoldText>Degree: </BoldText>
-              {state.degree}
-            </Typography>
-          </InfoBox>
-          <InfoBox>
-            <ArrowRight sx={{ color: "#1976d2" }} />
-            <Typography>
-              <BoldText>Field of study: </BoldText>
-              {state.fieldOfStudy}
-            </Typography>
-          </InfoBox>
-          <InfoBox>
-            <ArrowRight sx={{ color: "#1976d2" }} />
-            <Typography>
-              <BoldText>Author: </BoldText> {state.author}
-            </Typography>
-          </InfoBox>
-          <Description>{state.description}</Description>
+      {isLoading ? (
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
         </Box>
-      </Paper>
+      ) : (
+        details !== null && (
+          <>
+            <Title>{details.title}</Title>
+            <StyledPaper elevation={3}>
+              <Box sx={{ padding: "1rem" }}>
+                <InfoBox>
+                  <ArrowRight sx={{ color: "#1976d2" }} />
+                  <Typography>
+                    <BoldText>Degree: </BoldText>
+                    {details.degree}
+                  </Typography>
+                </InfoBox>
+                <InfoBox>
+                  <ArrowRight sx={{ color: "#1976d2" }} />
+                  <Typography>
+                    <BoldText>Field of study: </BoldText>
+                    {details.fieldOfStudy}
+                  </Typography>
+                </InfoBox>
+                <InfoBox>
+                  <ArrowRight sx={{ color: "#1976d2" }} />
+                  <Typography>
+                    <BoldText>Author: </BoldText> {details.author}
+                  </Typography>
+                </InfoBox>
+                <Description>{details.description}</Description>
+                <Hour>
+                  <BoldText>Created: </BoldText>
+                  {date}
+                </Hour>
+              </Box>
+            </StyledPaper>
+          </>
+        )
+      )}
       {error && (
         <ErrorInfoSnackbar open={error} onClose={handleCloseSnackbar} />
       )}

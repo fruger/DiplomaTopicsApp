@@ -10,7 +10,7 @@ const Navbar = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <HomeIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <HomeIcon sx={{ display: { md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -18,7 +18,7 @@ const Navbar = () => {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: { md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
