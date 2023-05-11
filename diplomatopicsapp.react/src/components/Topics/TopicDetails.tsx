@@ -12,6 +12,7 @@ import TopicDetail from "../../types/Topic/TopicDetail";
 const StyledPaper = styled(Paper)({
   margin: "0 3.5rem 0 3.5rem",
   backgroundColor: "#454a4d",
+  padding: "1rem",
 });
 
 const Title = styled(Box)({
@@ -55,6 +56,10 @@ const ButtonContainer = styled(Box)({
 
 const BoldText = styled("span")({
   fontWeight: "bold",
+});
+
+const StyledArrowRight = styled(ArrowRight)({
+  color: "#1976d2",
 });
 
 const Hour = styled(Box)({ color: "#ffffff" });
@@ -105,33 +110,31 @@ const TopicDetails: FC = () => {
           <>
             <Title>{details.title}</Title>
             <StyledPaper elevation={3}>
-              <Box sx={{ padding: "1rem" }}>
-                <InfoBox>
-                  <ArrowRight sx={{ color: "#1976d2" }} />
-                  <Typography>
-                    <BoldText>Degree: </BoldText>
-                    {details.degree}
-                  </Typography>
-                </InfoBox>
-                <InfoBox>
-                  <ArrowRight sx={{ color: "#1976d2" }} />
-                  <Typography>
-                    <BoldText>Field of study: </BoldText>
-                    {details.fieldOfStudy}
-                  </Typography>
-                </InfoBox>
-                <InfoBox>
-                  <ArrowRight sx={{ color: "#1976d2" }} />
-                  <Typography>
-                    <BoldText>Author: </BoldText> {details.author}
-                  </Typography>
-                </InfoBox>
-                <Description>{details.description}</Description>
-                <Hour>
-                  <BoldText>Created: </BoldText>
-                  {date}
-                </Hour>
-              </Box>
+              <InfoBox>
+                <StyledArrowRight />
+                <Typography>
+                  <BoldText>Degree: </BoldText>
+                  {details.degree}
+                </Typography>
+              </InfoBox>
+              <InfoBox>
+                <StyledArrowRight />
+                <Typography>
+                  <BoldText>Field of study: </BoldText>
+                  {details.fieldOfStudy}
+                </Typography>
+              </InfoBox>
+              <InfoBox>
+                <StyledArrowRight />
+                <Typography>
+                  <BoldText>Author: </BoldText> {details.author}
+                </Typography>
+              </InfoBox>
+              <Description>{details.description}</Description>
+              <Hour>
+                <BoldText>Created: </BoldText>
+                {date}
+              </Hour>
             </StyledPaper>
           </>
         )

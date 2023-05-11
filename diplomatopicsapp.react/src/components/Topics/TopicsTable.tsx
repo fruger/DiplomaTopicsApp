@@ -13,6 +13,12 @@ const StyledDataGrid = styled(DataGrid)({
   borderRadius: "8px",
   borderColor: "#393d40",
   color: "white",
+  "& .wrap-cell-text": {
+    whiteSpace: "normal",
+    lineHeight: "normal",
+    padding: 5,
+    height: "auto",
+  },
   "--unstable_DataGrid-headWeight": 700,
   "& .MuiDataGrid-columnHeaderTitleContainerContent": {
     fontSize: 20,
@@ -34,6 +40,11 @@ const StyledDataGrid = styled(DataGrid)({
   "& .MuiDataGrid-cellContent": {
     whiteSpace: "normal",
     wordWrap: "break-word",
+  },
+  "& .MuiDataGrid-columnHeader": {
+    borderColor: "#393d40",
+    borderStyle: "solid",
+    borderWidth: "0 0.5px",
   },
 });
 
@@ -64,14 +75,26 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems, searchQuery }) => {
       field: "title",
       headerName: "Title",
       flex: 0.5,
+      cellClassName: "wrap-cell-text",
     },
     {
       field: "degree",
       headerName: "Degree",
       flex: 0.1,
+      cellClassName: "wrap-cell-text",
     },
-    { field: "fieldOfStudy", headerName: "Field of study", flex: 0.15 },
-    { field: "author", headerName: "Author", flex: 0.15 },
+    {
+      field: "fieldOfStudy",
+      headerName: "Field of study",
+      flex: 0.15,
+      cellClassName: "wrap-cell-text",
+    },
+    {
+      field: "author",
+      headerName: "Author",
+      flex: 0.15,
+      cellClassName: "wrap-cell-text",
+    },
     {
       field: "available",
       headerName: "Available",
@@ -104,8 +127,10 @@ const TopicsTable: FC<TopicsTableProps> = ({ allItems, searchQuery }) => {
   }));
 
   const filteredRows = rows.filter((row) =>
-    Object.values(row).some((value) =>
-      String(value).toLowerCase().includes(searchQuery.toLowerCase())
+    Object.entries(row).some(
+      ([key, value]) =>
+        key !== "id" &&
+        String(value).toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 

@@ -22,7 +22,7 @@ const TopicsMain: FC = () => {
     void topicsApi
       .getAll()
       .then(({ data }) => {
-        setAllItems(data);
+        setAllItems(data.reverse());
       })
       .catch(() => {
         setError(true);

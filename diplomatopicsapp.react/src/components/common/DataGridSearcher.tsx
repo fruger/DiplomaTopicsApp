@@ -13,13 +13,13 @@ const WhiteTextField = styled(TextField)({
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "white",
+      borderColor: "#454a4d",
     },
     "&:hover fieldset": {
-      borderColor: "white",
+      borderColor: "#454a4d",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "white",
+      borderColor: "#454a4d",
     },
   },
 });
