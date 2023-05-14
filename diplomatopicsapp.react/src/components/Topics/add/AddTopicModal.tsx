@@ -1,7 +1,6 @@
 import {
   Backdrop,
   Box,
-  Button,
   Fade,
   Modal,
   Typography,
