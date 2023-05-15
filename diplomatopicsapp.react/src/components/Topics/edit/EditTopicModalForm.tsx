@@ -145,6 +145,12 @@ const EditTopicModalForm: FC<EditTopicModalFormProps> = ({
             <MenuItem value="Engineer's">Engineer's</MenuItem>
             <MenuItem value="Master's">Master's</MenuItem>
             <MenuItem value="Doctorate">Doctorate</MenuItem>
+            <MenuItem value="Bachelor's / Master's">
+              Bachelor's / Master's
+            </MenuItem>
+            <MenuItem value="Engineer's / Master's">
+              Engineer's / Master's
+            </MenuItem>
           </Select>
           <FormHelperText>
             {formik.touched.degree && formik.errors.degree}
@@ -199,7 +205,7 @@ const EditTopicModalForm: FC<EditTopicModalFormProps> = ({
           <CommonSubmitButton
             type="submit"
             loading={isMakingRequest}
-            text="Add topic"
+            text="Edit topic"
           />
           <Button
             type="reset"

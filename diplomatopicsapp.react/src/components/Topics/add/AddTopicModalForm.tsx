@@ -142,6 +142,12 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
             <MenuItem value="Engineer's">Engineer's</MenuItem>
             <MenuItem value="Master's">Master's</MenuItem>
             <MenuItem value="Doctorate">Doctorate</MenuItem>
+            <MenuItem value="Bachelor's / Master's">
+              Bachelor's / Master's
+            </MenuItem>
+            <MenuItem value="Engineer's / Master's">
+              Engineer's / Master's
+            </MenuItem>
           </Select>
           <FormHelperText>
             {formik.touched.degree && formik.errors.degree}
