@@ -63,7 +63,6 @@ const EditTopicModalForm: FC<EditTopicModalFormProps> = ({
       });
   };
 
-  console.log(item);
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .min(2, "This title is too short")
