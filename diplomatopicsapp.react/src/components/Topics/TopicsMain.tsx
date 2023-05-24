@@ -5,7 +5,7 @@ import TopicsTable from "./TopicsTable";
 import { Box } from "@mui/material";
 import TopicsHeader from "./TopicsHeader";
 import ErrorInfoSnackbar from "../common/ErrorSnackbar";
-import useDebounce from "../common/useDebounce";
+import useDebounce from "../../hooks/useDebounce";
 
 const TopicsMain: FC = () => {
   const [allItems, setAllItems] = useState<Topic[]>([]);

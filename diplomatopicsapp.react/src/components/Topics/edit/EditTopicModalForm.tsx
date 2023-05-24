@@ -90,7 +90,7 @@ const EditTopicModalForm: FC<EditTopicModalFormProps> = ({
     degree: formik.values.degree,
     fieldOfStudy: formik.values.fieldOfStudy,
     author: formik.values.author,
-    status: true,
+    status: formik.values.availability,
   };
 
   return (
@@ -157,7 +157,7 @@ const EditTopicModalForm: FC<EditTopicModalFormProps> = ({
         </FormControl>
         <TextField
           id="fieldofstudy-input"
-          name="fieldofstudy"
+          name="fieldOfStudy"
           label="Field of study"
           inputProps={{ maxLength: 50 }}
           multiline

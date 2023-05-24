@@ -155,7 +155,7 @@ const AddTopicModalForm: FC<AddTopicModalFormProps> = ({
         </FormControl>
         <TextField
           id="fieldofstudy-input"
-          name="fieldofstudy"
+          name="fieldOfStudy"
           label="Field of study"
           inputProps={{ maxLength: 50 }}
           multiline
