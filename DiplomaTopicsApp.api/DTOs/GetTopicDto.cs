@@ -1,3 +1,5 @@
+using System;
+
 namespace DiplomaTopicsApp.api.DTOs;
 
 public class GetTopicDto
